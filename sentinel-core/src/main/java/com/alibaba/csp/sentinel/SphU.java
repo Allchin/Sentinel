@@ -36,10 +36,20 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
  * {@link FlowRuleManager#loadRules(List)}, {@link DegradeRuleManager#loadRules(List)},
  * {@link SystemRuleManager#loadRules(List)}.
  * </p>
- *
+ *<p>
+ * * 逻辑上讲，需要被保护的物理以及逻辑资源，应该被封装一个入口。
+ * 在超过任何限制时，请求应该被阻塞,比如一些限制规则被执行的时候。
+ * 一但发生阻塞，应该抛出阻塞异常。
+ * 
+ * 为了配置这些限制，我们可以使用XXXRuleManage.loadRules() 去添加骨子额，
+ * 比如FlowRuleManager.loadRules(List), DegradeRuleManager.loadRules(List), SystemRuleManager.loadRules(List). 
+ * </p>
+ * 
  * <p>
  * Following code is an example, {@code "abc"} represent a unique name for the
  * protected resource:
+ * 
+ * 下面的代码就是例子，abc代表被保护资源的唯一名称。
  * </p>
  *
  * <pre>
@@ -70,6 +80,10 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
  *
  * @author jialiang.linjl
  * @see SphO
+ * 
+ * 
+
+ * 
  */
 public class SphU {
 
@@ -77,8 +91,10 @@ public class SphU {
 
     /**
      * Checking all {@link Rule}s about the resource.
+     * 
+     * 检查字符串代表的资源的全部规则
      *
-     * @param name the unique name of the protected resource
+     * @param name the unique name of the protected resource  
      * @throws BlockException if the block criteria is met, eg. when any rule's threshold is exceeded.
      */
     public static Entry entry(String name) throws BlockException {

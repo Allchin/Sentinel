@@ -45,6 +45,9 @@ public class CtSph implements Sph {
     private static final Object[] OBJECTS0 = new Object[0];
 
     /**
+     * <pre>
+     * 同样的[资源包装]共享同样的[资源处理单元链表]
+     * </pre>
      * Same resource({@link ResourceWrapper#equals(Object)}) will share the same
      * {@link ProcessorSlotChain}, no matter in which {@link Context}.
      */
@@ -62,11 +65,21 @@ public class CtSph implements Sph {
      * <p>Note that total {@link ProcessorSlot} count must not exceed {@link Constants#MAX_SLOT_CHAIN_SIZE},
      * otherwise no rules checking will do. In this condition, all requests will pass directly, with no checking
      * or exception.</p>
+     * 
+     * <pre>
+     *  检查资源相关的所有规则。
+     *  每种唯一的资源，会使用 处理单元  进行规则检查。
+     *  相同的资源会使用公共的相同的 [处理单元]
+     *  
+     *  注意，总共的处理单元数目，不能超过{@link Constants#MAX_SLOT_CHAIN_SIZE} (6000)的限制,
+     *  否则就什么规则也不会校验。
+     *  在这种情况下，所有的请求被直接放行,没有检查，没有异常。
+     * </pre>
      *
-     * @param resourceWrapper resource name
-     * @param count           tokens needed
-     * @param args            arguments of user method call
-     * @return {@link Entry} represents this call
+     * @param resourceWrapper resource name  资源包装
+     * @param count           tokens needed 一次请求需要几个token
+     * @param args            arguments of user method call 用户方法调用时的参数
+     * @return {@link Entry} represents this call 
      * @throws BlockException if any rule's threshold is exceeded
      */
     public Entry entry(ResourceWrapper resourceWrapper, int count, Object... args) throws BlockException {
@@ -219,6 +232,9 @@ public class CtSph implements Sph {
 
     @Override
     public Entry entry(String name) throws BlockException {
+    	/**
+    	 * 默认包装为出站方向资源
+    	 * */
         StringResourceWrapper resource = new StringResourceWrapper(name, EntryType.OUT);
         return entry(resource, 1, OBJECTS0);
     }

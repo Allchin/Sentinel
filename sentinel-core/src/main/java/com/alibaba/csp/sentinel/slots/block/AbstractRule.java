@@ -16,6 +16,17 @@
 package com.alibaba.csp.sentinel.slots.block;
 
 /***
+ * <pre>
+ * 抽象规则
+ * 已知的子类：
+ * TODO 
+ *   AuthorityRule.java 权限规则
+ *   DegradeRule.java 降级规则
+ *   FlowRule 限流规则 ? 
+ *   SystemRule 系统规则 ? 
+ *   
+ * 
+ * <pre>
  * @author youji.zj
  */
 public abstract class AbstractRule implements Rule {

@@ -47,14 +47,36 @@ import com.alibaba.csp.sentinel.util.TimeUtil;
  * </p>
  *
  * @author jialiang.linjl
+ * 
+ * 异常率 降级demo
+ * 降级是在资源不稳定时被使用，
+ * 在指定的时间窗口内，资源将会被降级。
+ * 
+ * 有2点可以来参考资源是否稳定：
+ * 异常率:每秒的异常数目与成功请的qps 比率到达 阈值，接下来的时间窗口中，对资源的访问将会被屏蔽。
+ * 
+ * 平均响应时间，参考RtDefradeDemo.
+ * 
  */
 public class ExceptionRatioDegradeDemo {
 
     private static final String KEY = "abc";
 
+    /**
+     * 总请求
+     */
     private static AtomicInteger total = new AtomicInteger();
+    /**
+     * 正常调用
+     */
     private static AtomicInteger pass = new AtomicInteger();
+    /**
+     * 被屏蔽调用
+     */
     private static AtomicInteger block = new AtomicInteger();
+    /**
+     * 发生异常的量
+     */
     private static AtomicInteger bizException = new AtomicInteger();
 
     private static volatile boolean stop = false;
@@ -76,6 +98,8 @@ public class ExceptionRatioDegradeDemo {
                         Entry entry = null;
                         try {
                             Thread.sleep(20);
+                            //Q : 这么丑的类，这个SphU是啥  ?
+                            //A :TODO 
                             entry = SphU.entry(KEY);
                             // token acquired, means pass
                             pass.addAndGet(1);
@@ -104,13 +128,19 @@ public class ExceptionRatioDegradeDemo {
 
     }
 
+    /**
+     * 初始化降级规则
+     */
     private static void initDegradeRule() {
         List<DegradeRule> rules = new ArrayList<DegradeRule>();
         DegradeRule rule = new DegradeRule();
         rule.setResource(KEY);
+        //异常率 0.1 
         // set limit exception ratio to 0.1
         rule.setCount(0.1);
+        //策略，异常降级
         rule.setGrade(RuleConstant.DEGRADE_GRADE_EXCEPTION);
+        //时间窗口 ，second
         rule.setTimeWindow(10);
         rules.add(rule);
         DegradeRuleManager.loadRules(rules);

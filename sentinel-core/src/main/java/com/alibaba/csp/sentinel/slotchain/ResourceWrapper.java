@@ -19,6 +19,8 @@ import com.alibaba.csp.sentinel.EntryType;
 
 /**
  * A wrapper of resource name and {@link EntryType}.
+ * 
+ * 资源包装， 资源名称与资源入站，出站方向的包装
  *
  * @author qinan.qn
  * @author jialiang.linjl
