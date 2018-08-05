@@ -113,7 +113,7 @@ public class CtSph implements Sph {
         Entry e = new CtEntry(resourceWrapper, chain, context);
         try {
         	/**
-        	 * 看代码，chain的顺序是
+        	 * 看代码，chain的顺序是(查看chains.bmp)
         	 * DefaultProcessorSlotChain;
         	 * NodeSelectorSlot
         	 * ClusterBuilderSlot
