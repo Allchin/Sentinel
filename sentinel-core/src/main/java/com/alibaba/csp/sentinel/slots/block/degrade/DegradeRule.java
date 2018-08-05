@@ -58,6 +58,8 @@ import com.alibaba.csp.sentinel.slots.clusterbuilder.ClusterBuilderSlot;
  * 平均响应时间 DEGRADE_GRADE_RT : 当平均响应时间到达阈值， (在DegradeRule 中以毫秒进行计算)
  * 资源就进入一种【退化】状态.如果接下来的5个请求还是在阈值之上，资源将被降级,
  * 意味着在下个时间窗口(timeWindow定义的以秒为单位) 内的所有请求都被阻塞。
+ * 
+ * 异常率：每秒的异常率在qps中打到一定阈值，下个时间窗口的请求将被阻塞
  * </pre>
  */
 public class DegradeRule extends AbstractRule {
