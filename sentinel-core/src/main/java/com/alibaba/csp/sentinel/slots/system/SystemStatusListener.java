@@ -23,6 +23,10 @@ import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.csp.sentinel.Constants;
 
 /**
+ * <pre>
+ * 获取系统当前的状态，负载什么的
+ * 
+ * </pre>
  * @author jialiang.linjl
  */
 public class SystemStatusListener implements Runnable {

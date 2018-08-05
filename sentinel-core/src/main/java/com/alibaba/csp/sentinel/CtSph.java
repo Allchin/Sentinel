@@ -107,9 +107,23 @@ public class CtSph implements Sph {
         if (chain == null) {
             return new CtEntry(resourceWrapper, null, context);
         }
-
+        /**
+         * 建立绑定关系
+         * */
         Entry e = new CtEntry(resourceWrapper, chain, context);
         try {
+        	/**
+        	 * 看代码，chain的顺序是
+        	 * DefaultProcessorSlotChain;
+        	 * NodeSelectorSlot
+        	 * ClusterBuilderSlot
+        	 * LogSlot
+        	 * StatisticSlot
+        	 * SystemSlot
+        	 * AuthoritySlot
+        	 * FlowSlot
+        	 * DegradeSlot
+        	 * */
             chain.entry(context, resourceWrapper, null, count, args);
         } catch (BlockException e1) {
             e.exit(count, args);
@@ -134,6 +148,13 @@ public class CtSph implements Sph {
      *
      * @param resourceWrapper target resource
      * @return {@link ProcessorSlotChain} of the resource
+     * 
+     * <pre>
+     *  获取资源的[处理单元链表] ,如果资源没有关联的链表，会new 一个新链表；
+     *  相同的资源将会通向相同的处理单元链表，不管是在哪个上下文。
+     *  总共的处理单元必须小于6000 ,否则会直接返回null
+     * 
+     * </pre>
      */
     private ProcessorSlot<Object> lookProcessChain(ResourceWrapper resourceWrapper) {
         ProcessorSlotChain chain = chainMap.get(resourceWrapper);
@@ -166,6 +187,12 @@ public class CtSph implements Sph {
         private ProcessorSlot<Object> chain;
         private Context context;
 
+        /**
+         * 绑定 资源，处理单元链表，上下文
+         * @param resourceWrapper
+         * @param chain
+         * @param context
+         */
         CtEntry(ResourceWrapper resourceWrapper, ProcessorSlot<Object> chain, Context context) {
             super(resourceWrapper);
             this.chain = chain;

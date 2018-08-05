@@ -121,6 +121,7 @@ public class SystemRule extends AbstractRule {
 
     @Override
     public boolean passCheck(Context context, DefaultNode node, int count, Object... args) {
+    	//Q : TODO 为啥直接pass ？？？ 
         return true;
     }
 

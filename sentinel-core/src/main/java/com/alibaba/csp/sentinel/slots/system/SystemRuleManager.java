@@ -81,6 +81,9 @@ public class SystemRuleManager {
 
     private static SystemStatusListener statusListener = null;
     private final static SystemPropertyListener listener = new SystemPropertyListener();
+    /**
+     * 共享的规则
+     */
     private static SentinelProperty<List<SystemRule>> currentProperty = new DynamicSentinelProperty<List<SystemRule>>();
 
     private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1,
@@ -173,7 +176,9 @@ public class SystemRuleManager {
 
     static class SystemPropertyListener extends SimplePropertyListener<List<SystemRule>> {
 
-        @Override
+        /**
+         * 更新规则
+         * */
         public void configUpdate(List<SystemRule> rules) {
             restoreSetting();
             // systemRules = rules;
@@ -255,7 +260,10 @@ public class SystemRuleManager {
 
     /**
      * Apply {@link SystemRule} to the resource. Only inbound traffic will be checked.
-     *
+     * <pre>
+     *  检查系统规则，只对入站资源有效
+     * 
+     * </pre>
      * @param resourceWrapper the resource.
      * @throws BlockException when any system rule's threshold is exceeded.
      */

@@ -30,6 +30,10 @@ import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 
 /**
+ * <pre>
+ *  展示了对接口的访问，按照系统负载来限流
+ * 
+ * </pre>
  * @author jialiang.linjl
  */
 public class SystemGuardDemo {
@@ -86,6 +90,9 @@ public class SystemGuardDemo {
         }
     }
 
+    /**
+     * 限流负载配置
+     */
     private static void initSystemRule() {
         List<SystemRule> rules = new ArrayList<SystemRule>();
         SystemRule rule = new SystemRule();
