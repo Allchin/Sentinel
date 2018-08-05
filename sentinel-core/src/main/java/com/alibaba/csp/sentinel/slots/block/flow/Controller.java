@@ -19,6 +19,11 @@ import com.alibaba.csp.sentinel.node.Node;
 
 /**
  * @author jialiang.linjl
+ * <pre>
+ * 已知子类DefaultController.java  线程，qps限制
+ * PaceController.java 按照斜率来计算计划中应该什么时候通过
+ * WarmUpController.java   预热限制
+ * </pre>
  */
 public interface Controller {
 

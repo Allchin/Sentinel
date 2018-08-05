@@ -33,8 +33,10 @@ public class DefaultController implements Controller {
         this.grade = grade;
     }
 
-    @Override
-    public boolean canPass(Node node, int acquireCount) {
+    /**
+     * 当前值加上请求值大于了限制就false
+     * */
+    public boolean canPass(Node node, int acquireCount) { 
         int curCount = avgUsedTokens(node);
         if (curCount + acquireCount > count) {
             return false;

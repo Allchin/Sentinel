@@ -33,7 +33,15 @@ import com.alibaba.csp.sentinel.slots.block.flow.Controller;
  * establishes a connection; connects to a remote service, and so on.
  *
  * That’s why we need “warm up”.
- *
+ * <pre>
+ * 原理来源于guava.guava的算法是基于比率的，意味着我们要转换成QPS。
+ * 
+ * 峰值请求可能会拖累系统，即便是在稳定时系统拥有更大的处理能力。
+ * 这种情况经常在初始化时发生,比如db完成连接，连接到远程服务这些。
+ * 
+ * 这就是为什么我们需要预热。
+ * 
+ * </pre>
  * Sentinel’s “warm up” implementation is based on Guava's algorithm. However,
  * unlike Guava's scenario, which is a “leaky bucket”, and is mainly used to
  * adjust the request interval, Sentinel is more focus on controlling the count
@@ -52,13 +60,32 @@ import com.alibaba.csp.sentinel.slots.block.flow.Controller;
  * a request, it takes a token from the bucket. The more tokens left in the
  * bucket, the lower the utilization of the system; when the token in the token
  * bucket is above a certain threshold, we call it in a "saturation" state.
+ *  
  *
  * Base on Guava’s theory, there is a linear equation we can write this in the
  * form y = m * x + b where y (a.k.a y(x)), or qps(q)), is our expected QPS
  * given a saturated period (e.g. 3 minutes in), m is the rate of change from
  * our cold (minimum) rate to our stable (maximum) rate, x (or q) is the
  * occupied token.
- *
+ * <pre>
+ * Sentinel 的预热实现基于guava的算法。但是不像guava的场景，他是一个漏斗，主要用于调整请求间隔。
+ * Sentinel 更加专注于控制每秒的入站请求数目，不依赖于间隔.她更像是令牌桶。
+ * 
+ * 桶中的剩余令牌用于测量系统能力。
+ * 如果一个系统每秒可以处理b个请求。
+ * 每秒中将会有b个token被放入桶中，直到桶满了。
+ * 当系统处理一个请求时，它从桶里拿一个令牌出来。
+ * 桶中的令牌越多，系统的附在越轻；
+ * 当桶中的令牌剩余量高于一个阈值，我们成为饱和状态。
+ * 
+ * 基于guava 的理论，我们得到一个线性的公式:
+ *  y = m * x + b
+ *  当 y (也就是y(x)) 或者qps(q) ) 是我们给定时间(比如3分钟)内的期望的QPS ，
+ *  m 是 从冷到热的 斜率
+ *  x是占用的令牌
+ * 
+ * </pre>
+
  * @author jialiang.linjl
  */
 public class WarmUpController implements Controller {

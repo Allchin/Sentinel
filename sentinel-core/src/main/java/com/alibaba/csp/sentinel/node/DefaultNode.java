@@ -63,6 +63,10 @@ public class DefaultNode extends StatisticNode {
         this.clusterNode = clusterNode;
     }
 
+    /**
+     * 向集群中添加节点，可以看到是ContextUtils在 添加
+     * @param node
+     */
     public void addChild(Node node) {
 
         if (!childList.contains(node)) {

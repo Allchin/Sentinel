@@ -22,7 +22,9 @@ import com.alibaba.csp.sentinel.slots.block.AbstractRule;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 
 /***
- *
+ * <pre>
+ * 应用是否是满足白名单、黑名单策略
+ * </pre>
  * @author youji.zj
  */
 public class AuthorityRule extends AbstractRule {
@@ -66,6 +68,11 @@ public class AuthorityRule extends AbstractRule {
         }
 
         // 白名单、黑名单列表为逗号分隔的应用列表, indexOf还不行，需要精确匹配
+        /**
+         * 先模糊匹配了一次，又精确匹配了一次，
+         * Q : 倾向是匹配不到的情况更多，那String indexof 比HashMap.containsKey效率更好?
+         * A : TODO 
+         * */
         int pos = this.getLimitApp().indexOf(requester);
         boolean contain = pos > -1;
 
@@ -81,7 +88,7 @@ public class AuthorityRule extends AbstractRule {
 
             contain = exactlyMatch;
         }
-
+        //本次规则是黑名单还是白名单
         if (strategy == RuleConstant.BLACK && contain) {
             return false;
         }

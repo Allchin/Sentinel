@@ -25,6 +25,14 @@ import com.alibaba.csp.sentinel.slots.block.AbstractRule;
  * average RT, QPS and thread count of requests into account. And it also
  * provides a measurement of system's load, but only available on Linux.
  * </p>
+ * <pre>
+ * Sentimel的系统规则适用于入站请求和请求量场景。
+ * 它需要考虑平均响应时间，QPS 和请求线程数目。
+ * 它也提供系统负载的测量，但是只在linux上工作。
+ * 
+ * 我们推荐协调 高系统load，qps ,平均响应时间，最大线程，去却表你的系统运行安全。
+ * 为了设置适当的阈值，需要进行性能测试。
+ * </pre>
  * <p>
  * We recommend to coordinate {@link #highestSystemLoad}, {@link #qps}, {@link #avgRt}
  * and {@link #maxThread} to make sure your system run in safety level.
@@ -39,6 +47,7 @@ import com.alibaba.csp.sentinel.slots.block.AbstractRule;
 public class SystemRule extends AbstractRule {
 
     /**
+     * 负数表示不检查 这项指标
      * negative value means no threshold checking.
      */
     private double highestSystemLoad = -1;

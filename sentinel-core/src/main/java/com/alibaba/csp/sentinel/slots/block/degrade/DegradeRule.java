@@ -51,6 +51,14 @@ import com.alibaba.csp.sentinel.slots.clusterbuilder.ClusterBuilderSlot;
  * </ul>
  *
  * @author jialiang.linjl
+ * <pre>
+ * 在资源不稳定时使用降级，这个资源在下个时间窗口被降级。
+ * 有2个方法决定资源是否稳定：
+ * 
+ * 平均响应时间 DEGRADE_GRADE_RT : 当平均响应时间到达阈值， (在DegradeRule 中以毫秒进行计算)
+ * 资源就进入一种【退化】状态.如果接下来的5个请求还是在阈值之上，资源将被降级,
+ * 意味着在下个时间窗口(timeWindow定义的以秒为单位) 内的所有请求都被阻塞。
+ * </pre>
  */
 public class DegradeRule extends AbstractRule {
 

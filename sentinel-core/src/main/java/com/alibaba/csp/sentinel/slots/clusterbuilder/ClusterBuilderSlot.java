@@ -63,6 +63,18 @@ public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode>
      * at the very beginning while concurrent map will hold the lock all the
      * time
      * </p>
+     * 
+     * <pre>
+     *  请记住，相同的资源(ResourceWrapper.equals的)将会共享相同的 [处理单元链表],
+     *  无论处理单元在哪个上下文中。
+     *  所以如果代码进入了 资源入口 ,上下文可能不同，但是资源名称一定相同。
+     *  
+     *  为了获取不同上下文中，相同资源的静态统计 , 一些资源共享相同的集群节点。
+     *  所有的集群节点都缓存在这个map中。
+     *  
+     *  应用运行时间越长，这个映射越趋于稳定，所以我们不倾向并发访问map，而是提供一把锁。
+     *  这把锁只有在引用刚开始的时候经常发生并发请求。
+     * </pre>
      */
     private static volatile Map<ResourceWrapper, ClusterNode> clusterNodeMap
         = new HashMap<ResourceWrapper, ClusterNode>();
@@ -118,6 +130,8 @@ public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode>
     }
 
     /**
+     * 按照资源名称从集群几点钟获取一个节点
+     * 
      * Get {@link ClusterNode} of the resource name.
      *
      * @param id resource name.

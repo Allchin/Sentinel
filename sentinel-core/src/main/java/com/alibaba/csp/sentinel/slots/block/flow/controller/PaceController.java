@@ -24,6 +24,8 @@ import com.alibaba.csp.sentinel.node.Node;
 
 /**
  * @author jialiang.linjl
+ * 
+ * 按照斜率来计算计划中应该什么时候通过
  */
 public class PaceController implements Controller {
 
